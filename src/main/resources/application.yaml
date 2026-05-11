@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: legallyshop
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/legally_shop}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:Long2003@}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+
+    jpa:
+      hibernate:
+        ddl-auto: validate   # Flyway quản lý schema, không để create/update
+      show-sql: false
+      properties:
+        hibernate:
+          format_sql: true
+          default_batch_fetch_size: 20
+
+    flyway:
+      enabled: true
+      locations: classpath:db/migration
+      baseline-on-migrate: true
+
+    data:
+      redis:
+        host: ${REDIS_HOST:localhost}
+        port: ${REDIS_PORT:6379}
+        password: ${REDIS_PASSWORD:}
+
+  app:
+    jwt:
+      secret: ${JWT_SECRET:change-me-in-production-minimum-32-chars}
+      access-expiry-ms: 900000     # 15 phút
+      refresh-expiry-ms: 604800000  # 7 ngày
+
+  springdoc:
+    swagger-ui:
+      path: /swagger-ui.html
+    api-docs:
+      path: /v3/api-docs
+
+  logging:
+    level:
+      org.springframework.security: DEBUG

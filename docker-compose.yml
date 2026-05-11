@@ -1,0 +1,45 @@
+version: '3.8'
+
+# Docker Compose để chạy cơ sở dữ liệu cho dự án Legally_BE
+# - PostgreSQL được cấu hình theo mặc định giống trong `src/main/resources/application.yaml`
+# - Redis có thể sử dụng mặc định không mật khẩu (application.yaml để trống mật khẩu theo mặc định)
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: legallyshop-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-legally_shop}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-Long2003@}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: legallyshop-redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    # Lưu ý: application.yaml mặc định không đặt mật khẩu Redis. Nếu bạn muốn bật mật khẩu,
+    # thêm `command: ["redis-server", "--requirepass", "yourpassword"]` và cập nhật
+    # cấu hình ứng dụng (REDIS_PASSWORD).
+
+volumes:
+  db_data:
+  redis_data:
+
+networks:
+  default:
+    driver: bridge
+
