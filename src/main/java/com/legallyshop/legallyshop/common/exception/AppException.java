@@ -14,6 +14,21 @@ public class AppException extends RuntimeException {
         this.code    = code;
         this.message = message;
     }
+    public static AppException notFound(String resource) {
+        return new AppException(404, resource + " không tồn tại");
+    }
+
+    public static AppException badRequest(String message) {
+        return new AppException(400, message);
+    }
+
+    public static AppException unauthorized(String message) {
+        return new AppException(401, message);
+    }
+
+    public static AppException forbidden() {
+        return new AppException(403, "Bạn không có quyền thực hiện hành động này");
+    }
 }
 
 // Dùng trong service:

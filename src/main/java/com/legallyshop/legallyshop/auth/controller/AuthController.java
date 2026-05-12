@@ -17,7 +17,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
-@Tag(name = "Auth")
+@Tag(name = "Auth", description = "Đăng ký, đăng nhập")
 public class AuthController {
 
     private final AuthService authService;

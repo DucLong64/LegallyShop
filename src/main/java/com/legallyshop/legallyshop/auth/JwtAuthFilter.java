@@ -1,6 +1,7 @@
 package com.legallyshop.legallyshop.auth;
 
 import com.legallyshop.legallyshop.user.entity.User;
+import com.legallyshop.legallyshop.user.entity.UserPrincipal;
 import com.legallyshop.legallyshop.user.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -41,9 +42,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             Long userId = Long.valueOf(claims.getSubject());
 
             User user = userRepo.findById(userId).orElseThrow();
+            UserPrincipal principal = new UserPrincipal(
+                    user.getId(),
+                    user.getEmail(),
+                    user.getPassword(),
+                    List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()))
+            );
             var auth = new UsernamePasswordAuthenticationToken(
-                    user, null,
-                    List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole())));
+                    principal, null, principal.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
         } catch (Exception ignored) {
         }
