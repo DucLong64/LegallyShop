@@ -1,7 +1,7 @@
 package com.legallyshop.legallyshop.product.entity;
 
 public enum ProductStatus {
-    DRAFT,
-    PUBLISHED,
-    UNPUBLISHED
+    DRAFT,      // Nháp — chưa hiển thị
+    ACTIVE,     // Đang bán
+    INACTIVE    // Ngừng bán
 }

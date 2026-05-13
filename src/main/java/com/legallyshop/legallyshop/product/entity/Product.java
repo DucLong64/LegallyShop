@@ -65,12 +65,20 @@ public class Product {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    // Helper
+    // Helper: Lấy giá thấp nhất
     public BigDecimal getMinPrice() {
         return skus.stream()
                 .filter(Sku::getIsActive)
                 .map(Sku::getPrice)
                 .min(Comparator.naturalOrder())
                 .orElse(BigDecimal.ZERO);
+    }
+    // Helper: lấy ảnh đại diện
+    public String getPrimaryImageUrl() {
+        return images.stream()
+                .filter(i -> Boolean.TRUE.equals(i.getIsPrimary()))
+                .findFirst()
+                .map(ProductImage::getUrl)
+                .orElse(null);
     }
 }

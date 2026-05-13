@@ -10,38 +10,80 @@ spring:
       maximum-pool-size: 10
       minimum-idle: 2
 
-    jpa:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
       hibernate:
-        ddl-auto: validate   # Flyway quản lý schema, không để create/update
-      show-sql: false
-      properties:
-        hibernate:
-          format_sql: true
-          default_batch_fetch_size: 20
+        format_sql: true
+        default_batch_fetch_size: 20
 
-    flyway:
-      enabled: true
-      locations: classpath:db/migration
-      baseline-on-migrate: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
 
-    data:
-      redis:
-        host: ${REDIS_HOST:localhost}
-        port: ${REDIS_PORT:6379}
-        password: ${REDIS_PASSWORD:}
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
 
-  app:
-    jwt:
-      secret: ${JWT_SECRET:change-me-in-production-minimum-32-chars}
-      access-expiry-ms: 900000     # 15 phút
-      refresh-expiry-ms: 604800000  # 7 ngày
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:leduclong0604@gmail.com}
+    password: ${MAIL_PASSWORD:Long2003@}
 
-  springdoc:
-    swagger-ui:
-      path: /swagger-ui.html
-    api-docs:
-      path: /v3/api-docs
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
-  logging:
-    level:
-      org.springframework.security: DEBUG
+  task:
+    execution:
+      pool:
+        core-size: 2
+        max-size: 5
+        queue-capacity: 100
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:change-me-in-production-minimum-32-chars}
+    access-expiry-ms: 900000
+    refresh-expiry-ms: 604800000
+  frontend-url: ${FRONTEND_URL:http://localhost:3000}
+
+vnpay:
+  tmn-code: ${VNPAY_TMN_CODE:your-tmn-code}
+  hash-secret: ${VNPAY_HASH_SECRET:your-hash-secret}
+  url: ${VNPAY_URL:https://sandbox.vnpayment.vn/paymentv2/vpcpay.html}
+  return-url: ${VNPAY_RETURN_URL:http://localhost:8080/api/v1/payments/vnpay/callback}
+
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME:your-cloud-name}
+  api-key: ${CLOUDINARY_API_KEY:your-api-key}
+  api-secret: ${CLOUDINARY_API_SECRET:your-api-secret}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: beans,health,info,metrics
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+
+logging:
+  level:
+    org.springframework.security: DEBUG
