@@ -19,7 +19,7 @@ public class CloudinaryService {
 
     private final Cloudinary cloudinary;
 
-    @Value("${cloudinary.folder:yourshop}")
+    @Value("${cloudinary.folder}")
     private String folder;
 
     /**

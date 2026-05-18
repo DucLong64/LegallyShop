@@ -67,6 +67,7 @@ cloudinary:
   cloud-name: ${CLOUDINARY_CLOUD_NAME:your-cloud-name}
   api-key: ${CLOUDINARY_API_KEY:your-api-key}
   api-secret: ${CLOUDINARY_API_SECRET:your-api-secret}
+  folder: ${CLOUDINARY_FOLDER:your-folder-name}
 
 springdoc:
   swagger-ui:
